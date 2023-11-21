@@ -74,7 +74,7 @@ def login():
     password = request.form['password']
 
     # Hier sollte eine sichere Authentifizierung implementiert werden
-    if username == 'admin' and password == 'admin-passwort':
+    if username == 'admin' and password == 'securepassword':
         session['user'] = username
         return {'message': 'Login successful'}
     else:

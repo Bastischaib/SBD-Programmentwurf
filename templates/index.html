@@ -1,1 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Chat</title>
+</head>
+<body>
+<div id="chat-box"></div>
+<label for="message-input"></label><input type="text" id="message-input" placeholder="Type your message">
+<button onclick="sendMessage()">Send</button>
+
+<script>
+    function sendMessage() {
+        let messageInput = document.getElementById('message-input');
+        let message = messageInput.value;
+
+        fetch('/send', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: 'message=' + encodeURIComponent(message),
+        })
+            .then(response => response.json())
+            .then(data => {
+                let chatBox = document.getElementById('chat-box');
+                chatBox.innerHTML += '<p>Sent: ' + message + '</p>';
+                chatBox.innerHTML += '<p>Encrypted: ' + data.encrypted_message + '</p>';
+            });
+
+        messageInput.value = '';
+    }
+
+    function receiveMessage() {
+        fetch('/receive', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: 'encrypted_message=' + encodeURIComponent(encryptedMessage),
+        })
+            .then(response => response.json())
+            .then(data => {
+                let chatBox = document.getElementById('chat-box');
+                chatBox.innerHTML += '<p>Received: ' + data.decrypted_message + '</p>';
+            });
+    }
+
+    setInterval(receiveMessage, 5000);  // Polling alle 5 Sekunden
+</script>
+</body>
+</html>
 
