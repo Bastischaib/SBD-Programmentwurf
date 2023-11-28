@@ -50,9 +50,9 @@ def generate_unique_code(length):
 
 def chacha20_encrypt(message):
     key = os.urandom(32)
-    iv = os.urandom(16)
+    nonce = os.urandom(16)
 
-    cipher = Cipher(algorithms.ChaCha20(key, iv), mode=None, backend=default_backend())
+    cipher = Cipher(algorithms.ChaCha20(key, nonce), mode=None, backend=default_backend())
     encryptor = cipher.encryptor()
 
     ciphertext = encryptor.update(message.encode()) + encryptor.finalize()
