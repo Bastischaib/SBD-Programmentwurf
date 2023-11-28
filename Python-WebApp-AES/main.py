@@ -51,7 +51,7 @@ def generate_unique_code(length):
 def AES_encrypt(message):
     key = os.urandom(32)
     iv = os.urandom(16)
-    cipher = Cipher(algorithms.AES(key), modes.CFB(iv), backend=default_backend())
+    cipher = Cipher(algorithms.AES(key), modes.GCM(iv), backend=default_backend())
     encryptor = cipher.encryptor()
 
     ciphertext = encryptor.update(message.encode()) + encryptor.finalize()
